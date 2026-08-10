@@ -19,3 +19,16 @@ async function createQuestion(body){
     const response = await api.post("/questions", body)
     return response.data
 }
+
+async function deleteQuestion(id){
+const response = await api.delete(`/questions/${id}`)
+return response.data
+}
+
+export{
+    getGameQuestions,
+    getAllQuestions,
+    getQuestionById,
+    createQuestion,
+    deleteQuestion
+}
