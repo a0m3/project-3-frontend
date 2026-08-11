@@ -3,6 +3,13 @@ import { useNavigate } from "react-router";
 import { money, MoneyLadder } from "./MoneyLadder";
 import { createHistory } from "../services/historyService";
 
+import {
+    getFiftyFiftyAnswers,
+    getAudienceResult,
+    getPhoneAnswer,
+    checkAnswer
+} from "../components/helping/gameHelper"
+
 
 const answerKeys = ["A", "B", "C", "D"]
 const checkAnswerWait = 2500
@@ -18,7 +25,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
     const [answeredCount, setAnsweredCount] = useState(0)
     const [gameStatus, setGameStatus] = useState("playing")
 
-}
+
 
 const [usedLife, setUsedLife] = useState({
     fiftyFifty: false,
@@ -55,8 +62,8 @@ function resetQuestion() {
     setPhoneResult(null)
 }
 
-function answerQuestion(index){
-    if(answerState !== "idle" || submitting.current){
+function answerQuestion(index) {
+    if (answerState !== "idle" || submitting.current) {
         return
     }
 
@@ -64,38 +71,93 @@ function answerQuestion(index){
     setSelected(index)
     setAnswerState("checking")
 
-    timer.current = setTimeout(()=>{
+    timer.current = setTimeout(() => {
         const correct = index === question.correctAnswer
 
         setAnswerState("revealed")
         setAnsweredCount(count => count + 1)
 
-        if(correct){
-            setCorrectCount(count => count+1 )
+        if (correct) {
+            setCorrectCount(count => count + 1)
         }
 
-        timer.current = setTimeout(()=>{
+        timer.current = setTimeout(() => {
             submitting.current(false)
 
-            if(!correct){
+            if (!correct) {
                 setGameStatus("lost")
                 return
             }
 
-            if(currentIndex+1 === totalQuestions){
+            if (currentIndex + 1 === totalQuestions) {
                 setGameStatus("won")
                 return
             }
 
-            setCurrentIndex(index => index+1)
+            setCurrentIndex(index => index + 1)
             resetQuestion()
         }, 2000)
     }, 2500)
 
-    function walkAway(){
-        if(answerState !== "idle" || submitting.current){
+    function walkAway() {
+        if (answerState !== "idle" || submitting.current) {
             return
         }
         setGameStatus("quit")
     }
+
+
+    const wrong = [0, 1, 2, 3].filter(
+        index => index !== question.correctAnswer
+    );
+
+    wrong.sort(() => Math.random() - 0.5)
+
+    setHiddenOptions(wrong.slice(0, 2))
+
+    setUsedLife({
+        ...usedLife,
+        fiftyFifty: true
+    });
+
+    useEffect(() => {
+        if (gameStatus === "playing" || historySaved) {
+            return
+        }
+
+        async function saveGame() {
+            try {
+                await createHistory({
+                    mode: mode,
+                    gameName: gameName,
+                    customGame: customGameId || null,
+                    totalQuestions: totalQuestions,
+                    questionsAnswered: answeredCount,
+                    correctCount: correctCount,
+                    status: gameStatus
+                })
+
+                setHistorySaved(true)
+            } catch (err) {
+                console.log(err)
+
+                setHistorySaved(true)
+            }
+        }
+
+        saveGame()
+    }, [
+        gameStatus,
+        historySaved,
+        mode,
+        gameName,
+        customGameId,
+        totalQuestions,
+        answeredCount,
+        correctCount
+    ])
 }
+}
+
+
+export default GamePlay
