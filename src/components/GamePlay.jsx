@@ -27,136 +27,172 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
 
 
 
-const [usedLife, setUsedLife] = useState({
-    fiftyFifty: false,
-    audiense: false,
-    phone: false
-})
+    const [usedLife, setUsedLife] = useState({
+        fiftyFifty: false,
+        audiense: false,
+        phone: false
+    })
 
-const [hiddenOptions, setHiddenOptions] = useState([])
-const [audienseResult, setAudienseResult] = useState(null)
-const [phoneResult, setPhoneResult] = useState(null)
+    const [hiddenOptions, setHiddenOptions] = useState([])
+    const [audienseResult, setAudienseResult] = useState(null)
+    const [phoneResult, setPhoneResult] = useState(null)
 
-const [historySaved, setHistorySaved] = useState(false)
-const [savingError, setSavingError] = useState("")
+    const [historySaved, setHistorySaved] = useState(false)
+    const [savingError, setSavingError] = useState("")
 
-const timer = useRef(null)
-const submitting = useRef(false)
+    const timer = useRef(null)
+    const submitting = useRef(false)
 
-const question = questions[currentIndex]
-const totalQuestions = questions.length
+    const question = questions[currentIndex]
+    const totalQuestions = questions.length
 
-useEffect(() => {
-    return () => {
-        if (timer.current) {
-            clearTimeout(timer.current)
+    useEffect(() => {
+        return () => {
+            if (timer.current) {
+                clearTimeout(timer.current)
+            }
         }
-    }
-}, [])
+    }, [])
 
-function resetQuestion() {
-    setSelected(null)
-    setAnswerState("idle")
-    setHiddenOptions([])
-    setAudienseResult(null)
-    setPhoneResult(null)
-}
-
-function answerQuestion(index) {
-    if (answerState !== "idle" || submitting.current) {
-        return
+    function resetQuestion() {
+        setSelected(null)
+        setAnswerState("idle")
+        setHiddenOptions([])
+        setAudienseResult(null)
+        setPhoneResult(null)
     }
 
-    submitting.current = true
-    setSelected(index)
-    setAnswerState("checking")
-
-    timer.current = setTimeout(() => {
-        const correct = index === question.correctAnswer
-
-        setAnswerState("revealed")
-        setAnsweredCount(count => count + 1)
-
-        if (correct) {
-            setCorrectCount(count => count + 1)
-        }
-
-        timer.current = setTimeout(() => {
-            submitting.current(false)
-
-            if (!correct) {
-                setGameStatus("lost")
-                return
-            }
-
-            if (currentIndex + 1 === totalQuestions) {
-                setGameStatus("won")
-                return
-            }
-
-            setCurrentIndex(index => index + 1)
-            resetQuestion()
-        }, 2000)
-    }, 2500)
-
-    function walkAway() {
+    function answerQuestion(index) {
         if (answerState !== "idle" || submitting.current) {
             return
         }
-        setGameStatus("quit")
-    }
 
+        submitting.current = true
+        setSelected(index)
+        setAnswerState("checking")
 
-    const wrong = [0, 1, 2, 3].filter(
-        index => index !== question.correctAnswer
-    );
+        timer.current = setTimeout(() => {
+            const correct = index === question.correctAnswer
 
-    wrong.sort(() => Math.random() - 0.5)
+            setAnswerState("revealed")
+            setAnsweredCount(count => count + 1)
 
-    setHiddenOptions(wrong.slice(0, 2))
-
-    setUsedLife({
-        ...usedLife,
-        fiftyFifty: true
-    });
-
-    useEffect(() => {
-        if (gameStatus === "playing" || historySaved) {
-            return
-        }
-
-        async function saveGame() {
-            try {
-                await createHistory({
-                    mode: mode,
-                    gameName: gameName,
-                    customGame: customGameId || null,
-                    totalQuestions: totalQuestions,
-                    questionsAnswered: answeredCount,
-                    correctCount: correctCount,
-                    status: gameStatus
-                })
-
-                setHistorySaved(true)
-            } catch (err) {
-                console.log(err)
-
-                setHistorySaved(true)
+            if (correct) {
+                setCorrectCount(count => count + 1)
             }
+
+            timer.current = setTimeout(() => {
+                submitting.current(false)
+
+                if (!correct) {
+                    setGameStatus("lost")
+                    return
+                }
+
+                if (currentIndex + 1 === totalQuestions) {
+                    setGameStatus("won")
+                    return
+                }
+
+                setCurrentIndex(index => index + 1)
+                resetQuestion()
+            }, 2000)
+        }, 2500)
+
+        function walkAway() {
+            if (answerState !== "idle" || submitting.current) {
+                return
+            }
+            setGameStatus("quit")
         }
 
-        saveGame()
-    }, [
-        gameStatus,
-        historySaved,
-        mode,
-        gameName,
-        customGameId,
-        totalQuestions,
-        answeredCount,
-        correctCount
-    ])
-}
+
+        const wrong = [0, 1, 2, 3].filter(
+            index => index !== question.correctAnswer
+        );
+
+        wrong.sort(() => Math.random() - 0.5)
+
+        setHiddenOptions(wrong.slice(0, 2))
+
+        setUsedLife({
+            ...usedLife,
+            fiftyFifty: true
+        });
+
+        useEffect(() => {
+            if (gameStatus === "playing" || historySaved) {
+                return
+            }
+
+            async function saveGame() {
+                try {
+                    await createHistory({
+                        mode: mode,
+                        gameName: gameName,
+                        customGame: customGameId || null,
+                        totalQuestions: totalQuestions,
+                        questionsAnswered: answeredCount,
+                        correctCount: correctCount,
+                        status: gameStatus
+                    })
+
+                    setHistorySaved(true)
+                } catch (err) {
+                    console.log(err)
+
+                    setHistorySaved(true)
+                }
+            }
+
+            saveGame()
+        }, [
+            gameStatus,
+            historySaved,
+            mode,
+            gameName,
+            customGameId,
+            totalQuestions,
+            answeredCount,
+            correctCount
+        ])
+
+        let moneyWon = 0
+
+        if (correctCount > 0) {
+            moneyWon = ladder[correctCount - 1]
+        }
+
+        if (gameStatus !== "playing") {
+            return (
+                <div className="end-screen card">
+                    {gameStatus === "won" && (
+                        <>
+                            <div className="emoji">🎉</div>
+                            <h1>CONGRATULATIONS!</h1>
+                            <p>You are a Millionaire!</p>
+                        </>
+                    )}
+
+                    {gameStatus === "lost" && (
+                        <>
+                            <div className="emoji">✗</div>
+                            <h1>Game Over</h1>
+                            <p>Better luck next time.</p>
+                        </>
+                    )}
+
+                    {gameStatus === "quit" && (
+                        <>
+                            <div className="emoji">👋</div>
+                            <h1>You Walked Away</h1>
+                            <p>Better luck next time.</p>
+                        </>
+                    )}
+                </div>
+            )
+        }
+    }
 }
 
 
