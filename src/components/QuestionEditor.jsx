@@ -69,7 +69,7 @@ function QuestionEditor({questions, setQuestions}) {
         const question = questions[index]
 
         setForm({
-            question: questions.question,
+            question: question.question,
             options: [...question.options],
             correctAnswer: question.correctAnswer
         })
@@ -95,16 +95,21 @@ function QuestionEditor({questions, setQuestions}) {
                     <ul className='options-preview'>
                         {question.options.map((option, i) =>(
                             <li key={i} className={
-                                i === question.correctAnswer ? 'is correct' : ''
+                                i === question.correctAnswer
+                                 ? 'is-correct' 
+                                 : ''
                             }>
                                 {answers[i]}. {option}
-                                {i === question.correctAnswer && '✓'}
+                                {i === question.correctAnswer && ' ✓'}
 
                             </li>
                         ))}
                     </ul>
                     <div className='btn-row'>
-                        <button type='button' className='btn btn-sm btn-secondary' onClick={() => deleteQuestion(index)}>
+                        <button type='button' className='btn btn-sm btn-secondary' onClick={() => editQuestion(index)}>
+                            Edit
+                        </button>
+                        <button type='button' className='btn btn-sm btn-danger' onClick={() => deleteQuestion(index)}>
                             Delete
                         </button>
                     </div>
@@ -138,17 +143,17 @@ function QuestionEditor({questions, setQuestions}) {
                             {answers[index]}
                         </span>
                     <label htmlFor={`option-${index}`} className='sr-only'>
-                        {'Answer' + answers[index]}
+                        {'Answer ' + answers[index]}
                     </label>
                     <input id={`option-${index}`}
                     type='text'
-                    placeholder={'Answer' + answers[index]}
+                    placeholder={'Answer ' + answers[index]}
                     value={option}
                     onChange={event =>
                         changeOption(index, event.target.value)
                     }
                     >
-                    </input>
+
                     <label>
                     <input type='radio'
                     name='correctAnswer'
@@ -157,7 +162,8 @@ function QuestionEditor({questions, setQuestions}) {
                         Number(form.correctAnswer) === index
                     }
                     onChange={handleChange}
-                    ></input>
+                    />
+                    correct
                     </label>
                     </div>
                 ))}
