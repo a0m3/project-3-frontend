@@ -1,14 +1,12 @@
-import { useState } from "react";
 import { Route, Routes } from "react-router";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 import SignupPage from "./pages/SignupPage";
 import Homepage from "./pages/Homepage";
 import SignInPage from "./pages/SigninPage";
 import Dashboard from "./pages/Dashboard";
-import { useEffect } from "react";
-import { getCurrentUser, logout } from "./services/authService";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { useAuth } from "./context/AuthContext";
+
 function App() {
   return (
     <div>
