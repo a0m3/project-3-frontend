@@ -162,6 +162,18 @@ function QuestionEditor({questions, setQuestions}) {
                     </div>
                 ))}
             </fieldset>
+
+            <div className='btn-row'>
+                <button type='submit' className='btn btn-primary'>
+                {editIndex === null ? 'Add question' : 'Update question'}
+                </button>
+
+                {editIndex !== null &&(
+                    <button type='button' className='btn' onClick={resetForm}>
+                        cancel
+                    </button>
+                )}
+            </div>
         </form>
       </article>
     </div>
