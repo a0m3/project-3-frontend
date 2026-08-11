@@ -4,24 +4,26 @@ const moneyLadder = [
 ]
 
 function money(amount) {
-    return "$" + amount
+    return "$" + amount.toLocaleString()
 }
 
 
-function MoneyLadder({ ladder, currentIndex }) {
-    {
-        ladder.map((amount, index) => {
+function MoneyLadder({ ladder = moneyLadder, currentIndex }) {
+    return(
+        <div className="money-ladder">
+        {ladder.map((amount, index) => {
             const level = index + 1
             const isCurrent = index === currentIndex
             const isReached = index < currentIndex
             return (
-                <div key={level}>
-                    <span>{level}</span>
-                    <span>{money(amount)}</span>
+                <div key={level} className={"ladder-row" + (isCurrent ? 'is-current' : isReached ? 'is-reached' : '')}>
+                    <span className="ladder-level">{level}</span>
+                    <span className="ladder-amount">{money(amount)}</span>
                 </div>
             )
-        })
-    }
+        })}
+    </div>
+)
 }
 
 
