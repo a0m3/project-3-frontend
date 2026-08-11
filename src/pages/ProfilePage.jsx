@@ -32,9 +32,27 @@ function ProfilePage() {
             best = game.moneyWon;
         }
     }
-    
+
   return (
-    <div>ProfilePage</div>
+    <div className='page'>
+      <div>
+        <h1>My Profile</h1>
+      </div>
+
+      <div>
+        <p>Username: {user.username}</p>
+      </div>
+    
+    <div>
+      <h3>Stats</h3>
+
+      <div>
+        <strong>{history.length}</strong> Game Played
+        <strong>{wins}</strong> Game Wons
+        
+      </div>
+    </div>
+    </div>
   )
 }
 
