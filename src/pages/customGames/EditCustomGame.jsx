@@ -52,7 +52,25 @@ function EditCustomGame() {
   }
 
   return (
-    <div>EditCustomGame</div>
+    <div className='page page-narrow'>
+      <header className='page-header'>
+        <h1> Edit Custom games</h1>
+      </header>
+      {error && <p className='error-banner' role='alert'>{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <article className='card'>
+          <div className='form-field'>
+            <label htmlFor='game-name'>Game name</label>
+            <input id='game-name' value={name} onChange={event => setName(event.target.value)}/>
+          </div>
+        </article>
+        <QuestionEditor questions={questions} setQuestions={setQuestions}/>
+        <div className='btn-row'>
+          <button className='btn btn-primary' type='submit'>Save changes</button>
+          <Link to={`/custom-games/${id}`} className='btn'>Cancel</Link>
+        </div>
+      </form>
+    </div>
   )
 }
 
