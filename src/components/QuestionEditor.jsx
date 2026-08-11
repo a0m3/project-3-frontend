@@ -12,6 +12,14 @@ function QuestionEditor((questions, setQuestions)) {
     const [form, setForm] = useState(newQuestion)
     const [editIndex, setEditIndex] = useState(null)
     const [error, setError] = useState('')
+
+    function handleChange(event){
+        const {name, value} = event.target
+        setForm({
+            ...form,
+            [name]: value
+        })
+    }
     function changeOption(index,value) {
         const options = [...form.options]
         options[index] = value
@@ -28,7 +36,7 @@ function QuestionEditor((questions, setQuestions)) {
         setError('')
     }
 
-    function saveQuestion(event){
+    function handleSubmit(event){
         event.preventDefault()
 
         if (!form.question.trim()){
@@ -104,7 +112,47 @@ function QuestionEditor((questions, setQuestions)) {
             ))}
         </ul>
       )}
-      <article className='card'></article>
+      <article className='card'>
+        <header>
+            <h2>
+                {editIndex === null ? 'Add a question': 'Edit question'}
+            </h2>
+        </header>
+        {error && <p className="Error-banner" role='alert'>{error}</p>}
+
+        <form onSubmit={handleSubmit}>
+            <div className='form-field'>
+                <label htmlFor='question-text'>Question</label>
+                <textarea id="question-text"
+                rows='2'
+                value={form.question}
+                onChange={handleChange}
+                />
+            </div>
+
+            <fieldset>
+                <legend>Answer options</legend>
+                {form.options.map((option, index)=> (
+                    <div className='option-input-row' key={index}>
+                        <span className='option-key'>
+                            {answers[index]}
+                        </span>
+                    <label htmlFor={`option-${index}`} className='sr-only'>
+                        {'Answer' + answers[index]}
+                    </label>
+                    <input id={`option-${index}`}
+                    type='text'
+                    placeholder={'Answer' + answers[index]}
+                    value={option}
+                    onChange={event =>
+                        changeOption(index, event.target.value)
+                    }
+                    ></input>
+                    </div>
+                ))}
+            </fieldset>
+        </form>
+      </article>
     </div>
   )
 }
