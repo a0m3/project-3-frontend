@@ -9,7 +9,7 @@ function QuestionEditor((questions, setQuestions)) {
         correctAnswer: 0
     }
 
-    const [form, setForm] = useState(emptyQuestion)
+    const [form, setForm] = useState(newQuestion)
     const [editIndex, setEditIndex] = useState(null)
     const [error, setError] = useState('')
     function changeOption(index,value) {
@@ -20,6 +20,32 @@ function QuestionEditor((questions, setQuestions)) {
             ...form,
             options: options
         })
+    }
+
+    function resetForm(){
+        setForm(emptyQuestion)
+        setEditIndex(null)
+        setError('')
+    }
+
+    function saveQuestion(event){
+        event.preventDefault()
+
+        if (!form.question.trim()){
+            setError('Question text cannot be empty.')
+            return
+        }
+
+        for (const option of form.options){
+            if (!option.trim()){
+                setError('All four answers must be filled')
+                return
+            }
+        }
+
+        const question = {
+            
+        }
     }
   return (
     <div>
