@@ -57,9 +57,54 @@ function QuestionEditor((questions, setQuestions)) {
         }
         resetForm()
     }
+    function editQuestion (index) {
+        const question = questions[index]
+
+        setForm({
+            question: questions.question,
+            options: [...question.options],
+            correctAnswer: question.correctAnswer
+        })
+
+        setEditIndex(index)
+        setError('')
+    }
+    function deleteQuestion(index) {
+        setQuestions(questions.filter(( question, i) => i !== index))
+        if (editIndex === index) {
+            resetForm()
+        }
+    }
   return (
     <div>
-      
+      {questions.length > 0 && (
+        <ul className="question-list">
+            {questions.map((question,index) => (
+                <li className="question-list-item" key={index}>
+                    <h4>
+                        question {index + 1}: {question.question}
+                    </h4>
+                    <ul className='options-preview'>
+                        {question.options.map((option, i) =>(
+                            <li key={i} className={
+                                i === question.correctAnswer ? 'is correct' : ''
+                            }>
+                                {answers[i]}. {option}
+                                {i === question.correctAnswer && '✓'}
+
+                            </li>
+                        ))}
+                    </ul>
+                    <div className='btn-row'>
+                        <button type='button' className='btn btn-sm btn-secondary' onClick={() => deleteQuestion(index)}>
+                            Delete
+                        </button>
+                    </div>
+                </li>
+            ))}
+        </ul>
+      )}
+      <article className='card'></article>
     </div>
   )
 }
