@@ -36,7 +36,37 @@ function CreateCustomGame() {
     }
   }
   return (
-    <div></div>
+    <div className='page page-narrow'>
+      <header className='page-header'>
+        <h1>Create Custom Game</h1>
+      </header>
+      {error && <p className="error-banner" role='alert'>{error}</p>}
+
+      <form onSubmit={handleSubmit}>
+        <article className='card'>
+          <div className="form-field">
+            <label htmlFor='game-name'>Game Name</label>
+            <input 
+            id='game-name'
+            value={name}
+            onChange={event =>
+              setName(event.target.value)
+            }
+            placeholder='My game'
+            />
+          </div>
+        </article>
+        <QuestionEditor
+        questions={questions}
+        setQuestions={setQuestions}
+        />
+        <div className='btn-row'>
+          <button className='btn btn-primary' type='submit'>Save game</button>
+          <Link to='/custom-games' className='btn'>Cancel</Link>
+        </div>
+        <p>{questions.length}questions</p>
+      </form>
+    </div>
   )
 }
 
