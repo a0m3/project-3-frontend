@@ -23,7 +23,7 @@ function QuestionEditor((questions, setQuestions)) {
     }
 
     function resetForm(){
-        setForm(emptyQuestion)
+        setForm(newQuestion)
         setEditIndex(null)
         setError('')
     }
@@ -44,8 +44,18 @@ function QuestionEditor((questions, setQuestions)) {
         }
 
         const question = {
-            
+            question: form.question.trim(),
+            options: form.options.map(option => option.trim()),
+            correctAnswer: Number(form.correctAnswer)
         }
+        if(editIndex === null) {
+            setQuestions([...questions,question])
+        } else{
+            const updated = [...questions]
+            updated[editIndex] = question
+            setQuestions(updated)
+        }
+        resetForm()
     }
   return (
     <div>
