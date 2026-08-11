@@ -189,7 +189,55 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                             <p>Better luck next time.</p>
                         </>
                     )}
+
+                    <div className="final-amount">
+                        {money(moneyWon)}
+                    </div>
+
+                    <div className="end-stats">
+                        <div>
+                            <strong>{answeredCount}</strong>
+                            Questions Answered
+                        </div>
+
+                        <div>
+                            <strong>{correctCount}</strong>
+                            Correct Answers
+                        </div>
+
+                        <div>
+                            <strong>{totalQuestions}</strong>
+                            Total Questions
+                        </div>
+                    </div>
+
+                    <div>
+                        {onPlayAgain && (
+                            <button
+                                className="btn btn-primary"
+                                onClick={onPlayAgain}
+                            >
+                                Play Again
+                            </button>
+                        )}
+
+                        <button
+                            className="btn btn-secondary"
+                            onClick={() => navigate("/history")}
+                        >
+                            View History
+                        </button>
+
+                        <button
+                            className="btn"
+                            onClick={() => navigate("/dashboard")}
+                        >
+                            Home
+                        </button>
+                    </div>
                 </div>
+
+
             )
         }
     }

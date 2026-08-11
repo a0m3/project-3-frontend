@@ -56,4 +56,3 @@ export function checkAnswer(selected, correctAnswer) {
 
     return false
 }
-
