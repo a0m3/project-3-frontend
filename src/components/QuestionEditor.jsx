@@ -2,7 +2,7 @@ import {useState} from 'react'
 
 const answers = ['A', 'B', 'C', 'D']
 
-function QuestionEditor((questions, setQuestions)) {
+function QuestionEditor({questions, setQuestions}) {
     const newQuestion = {
         question: '',
         options: ['', '', '', ''],
@@ -147,10 +147,33 @@ function QuestionEditor((questions, setQuestions)) {
                     onChange={event =>
                         changeOption(index, event.target.value)
                     }
+                    >
+                    </input>
+                    <label>
+                    <input type='radio'
+                    name='correctAnswer'
+                    value={index}
+                    checked={
+                        Number(form.correctAnswer) === index
+                    }
+                    onChange={handleChange}
                     ></input>
+                    </label>
                     </div>
                 ))}
             </fieldset>
+
+            <div className='btn-row'>
+                <button type='submit' className='btn btn-primary'>
+                {editIndex === null ? 'Add question' : 'Update question'}
+                </button>
+
+                {editIndex !== null &&(
+                    <button type='button' className='btn' onClick={resetForm}>
+                        cancel
+                    </button>
+                )}
+            </div>
         </form>
       </article>
     </div>
