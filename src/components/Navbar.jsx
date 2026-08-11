@@ -5,8 +5,8 @@ function Navbar() {
   const { logout, user, isAdmin } = useAuth()
   return (
     <nav className='navbar'>
-      <link to="/" className="navbar-brand">
-        Millionare<span>?</span></link>
+      <Link to="/" className="navbar-brand">
+        Millionare<span>?</span></Link>
       {user
         ?
         (<>

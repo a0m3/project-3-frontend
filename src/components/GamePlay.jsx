@@ -1,23 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { money, MoneyLadder } from "./MoneyLadder";
+import { moneyAmount, MoneyLadder } from "./MoneyLadder";
 import { createHistory } from "../services/historyService";
 
 import {
-    getFiftyFiftyAnswers,
-    getAudienceResult,
-    getPhoneAnswer,
-    checkAnswer
-} from "../components/helping/gameHelper"
-
+    getFiftyFiftyAnswers, getAudienceResult, getPhoneAnswer, checkAnswer
+}
+    from "../components/helping/gameHelper"
 
 const answerKeys = ["A", "B", "C", "D"]
 const checkAnswerWait = 2500
 const revealAnswerDelay = 2000
 
-
 function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain }) {
+
     const navigate = useNavigate()
+
     const [currentIndex, setCurrentIndex] = useState(0)
     const [selected, setSelected] = useState(null)
     const [answerState, setAnswerState] = useState("idle")
@@ -26,15 +24,14 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
     const [gameStatus, setGameStatus] = useState("playing")
 
 
-
     const [usedLife, setUsedLife] = useState({
         fiftyFifty: false,
-        audiense: false,
+        audience: false,
         phone: false
     })
 
     const [hiddenOptions, setHiddenOptions] = useState([])
-    const [audienseResult, setAudienseResult] = useState(null)
+    const [audienceResult, setAudienceResult] = useState(null)
     const [phoneResult, setPhoneResult] = useState(null)
 
     const [historySaved, setHistorySaved] = useState(false)
@@ -46,6 +43,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
     const question = questions[currentIndex]
     const totalQuestions = questions.length
 
+
     useEffect(() => {
         return () => {
             if (timer.current) {
@@ -54,15 +52,18 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
         }
     }, [])
 
+
     function resetQuestion() {
         setSelected(null)
         setAnswerState("idle")
         setHiddenOptions([])
-        setAudienseResult(null)
+        setAudienceResult(null)
         setPhoneResult(null)
     }
 
+
     function answerQuestion(index) {
+
         if (answerState !== "idle" || submitting.current) {
             return
         }
@@ -71,8 +72,13 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
         setSelected(index)
         setAnswerState("checking")
 
+
         timer.current = setTimeout(() => {
-            const correct = index === question.correctAnswer
+
+            const correct = checkAnswer(
+                index,
+                question.correctAnswer
+            )
 
             setAnswerState("revealed")
             setAnsweredCount(count => count + 1)
@@ -81,8 +87,10 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                 setCorrectCount(count => count + 1)
             }
 
+
             timer.current = setTimeout(() => {
-                submitting.current(false)
+
+                submitting.current = false
 
                 if (!correct) {
                     setGameStatus("lost")
@@ -96,179 +104,306 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
 
                 setCurrentIndex(index => index + 1)
                 resetQuestion()
-            }, 2000)
-        }, 2500)
 
-        function walkAway() {
-            if (answerState !== "idle" || submitting.current) {
-                return
-            }
-            setGameStatus("quit")
+            }, revealAnswerDelay)
+
+        }, checkAnswerWait)
+    }
+
+
+    function walkAway() {
+
+        if (answerState !== "idle" || submitting.current) {
+            return
         }
 
+        setGameStatus("quit")
+    }
 
-        const wrong = [0, 1, 2, 3].filter(
-            index => index !== question.correctAnswer
-        );
 
-        wrong.sort(() => Math.random() - 0.5)
+    function useFiftyFifty() {
 
-        setHiddenOptions(wrong.slice(0, 2))
+        if (usedLife.fiftyFifty || answerState !== "idle") {
+            return
+        }
+
+        const hidden = getFiftyFiftyAnswers(
+            question.correctAnswer
+        )
+
+        setHiddenOptions(hidden)
 
         setUsedLife({
             ...usedLife,
             fiftyFifty: true
-        });
+        })
+    }
 
-        useEffect(() => {
-            if (gameStatus === "playing" || historySaved) {
-                return
-            }
 
-            async function saveGame() {
-                try {
-                    await createHistory({
-                        mode: mode,
-                        gameName: gameName,
-                        customGame: customGameId || null,
-                        totalQuestions: totalQuestions,
-                        questionsAnswered: answeredCount,
-                        correctCount: correctCount,
-                        status: gameStatus
-                    })
+    function useAudience() {
 
-                    setHistorySaved(true)
-                } catch (err) {
-                    console.log(err)
-
-                    setHistorySaved(true)
-                }
-            }
-
-            saveGame()
-        }, [
-            gameStatus,
-            historySaved,
-            mode,
-            gameName,
-            customGameId,
-            totalQuestions,
-            answeredCount,
-            correctCount
-        ])
-
-        let moneyWon = 0
-
-        if (correctCount > 0) {
-            moneyWon = ladder[correctCount - 1]
+        if (usedLife.audience || answerState !== "idle") {
+            return
         }
 
-        if (gameStatus !== "playing") {
-            return (
-                <div className="end-screen card">
-                    {gameStatus === "won" && (
-                        <>
-                            <div className="emoji">🎉</div>
-                            <h1>CONGRATULATIONS!</h1>
-                            <p>You are a Millionaire!</p>
-                        </>
-                    )}
+        const result = getAudienceResult(
+            question.correctAnswer
+        )
 
-                    {gameStatus === "lost" && (
-                        <>
-                            <div className="emoji">✗</div>
-                            <h1>Game Over</h1>
-                            <p>Better luck next time.</p>
-                        </>
-                    )}
+        setAudienceResult(result)
 
-                    {gameStatus === "quit" && (
-                        <>
-                            <div className="emoji">👋</div>
-                            <h1>You Walked Away</h1>
-                            <p>Better luck next time.</p>
-                        </>
-                    )}
+        setUsedLife({
+            ...usedLife,
+            audience: true
+        })
+    }
 
-                    <div className="final-amount">
-                        {money(moneyWon)}
-                    </div>
 
-                    <div className="end-stats">
-                        <div>
-                            <strong>{answeredCount}</strong>
-                            Questions Answered
-                        </div>
+    function usePhone() {
 
-                        <div>
-                            <strong>{correctCount}</strong>
-                            Correct Answers
-                        </div>
+        if (usedLife.phone || answerState !== "idle") {
+            return
+        }
 
-                        <div>
-                            <strong>{totalQuestions}</strong>
-                            Total Questions
-                        </div>
-                    </div>
+        const answer = getPhoneAnswer(
+            question.correctAnswer
+        )
 
+        setPhoneResult(answer)
+
+        setUsedLife({
+            ...usedLife,
+            phone: true
+        })
+    }
+
+
+    useEffect(() => {
+
+        if (gameStatus === "playing" || historySaved) {
+            return
+        }
+
+        async function saveGame() {
+
+            try {
+
+                await createHistory({
+                    mode: mode,
+                    gameName: gameName,
+                    customGame: customGameId || null,
+                    totalQuestions: totalQuestions,
+                    questionsAnswered: answeredCount,
+                    correctCount: correctCount,
+                    status: gameStatus
+                })
+
+                setHistorySaved(true)
+
+            } catch (err) {
+                console.log(err)
+                setSavingError("Could not save game history.")
+                setHistorySaved(true)
+            }
+        }
+        saveGame()
+    }, [
+        gameStatus,
+        historySaved,
+        mode,
+        gameName,
+        customGameId,
+        totalQuestions,
+        answeredCount,
+        correctCount
+    ])
+
+    let moneyWon = 0
+    if (correctCount > 0) {
+        moneyWon = ladder[correctCount - 1]
+    }
+
+    if (gameStatus !== "playing") {
+        return (
+            <div className="end-screen card">
+                {gameStatus === "won" && (
+                    <>
+                        <div className="emoji">🎉</div>
+                        <h1>CONGRATULATIONS!</h1>
+                        <p>You are a Millionaire!</p>
+                    </>
+                )}
+
+                {gameStatus === "lost" && (
+                    <>
+                        <div className="emoji">✗</div>
+                        <h1>Game Over</h1>
+                        <p>Better luck next time.</p>
+                    </>
+                )}
+
+                {gameStatus === "quit" && (
+                    <>
+                        <div className="emoji">👋</div>
+                        <h1>You Walked Away</h1>
+                        <p>Better luck next time.</p>
+                    </>
+                )}
+
+                <div className="final-amount">
+                    {moneyAmoount(moneyWon)}
+                </div>
+
+                <div className="end-stats">
                     <div>
-                        {onPlayAgain && (
-                            <button
-                                className="btn btn-primary"
-                                onClick={onPlayAgain}
-                            >
-                                Play Again
-                            </button>
-                        )}
-
-                        <button
-                            className="btn btn-secondary"
-                            onClick={() => navigate("/history")}
-                        >
-                            View History
-                        </button>
-
-                        <button
-                            className="btn"
-                            onClick={() => navigate("/dashboard")}
-                        >
-                            Home
-                        </button>
+                        <strong>{answeredCount}</strong>
+                        Questions Answered
                     </div>
-
-                    <div className="question-card">
-                        <p className="question-text">
-                            {question.question}
-                        </p>
-
-                        <div className="answer-grid">
-                            {question.options.map((option, index) => {
-                                const hidden = hiddenOptions.includes(index)
-                                let className = "answer-btn"
-                                if (hidden) {
-                                    className += "hidden"
-                                }
-                                if (selected === index) {
-                                    className += "selected"
-                                }
-                                if (answerState === "revealed"){
-                                    if( index === question.correctAnswer){
-                                        className += "correct"
-                                    }
-                                    if(
-                                        index === selected && index !==question.correctAnswer){
-                                            className += "wrong"
-                                        }
-                                }
-                            })}
-                        </div>
+                    <div>
+                        <strong>{correctCount}</strong>
+                        Correct Answers
+                    </div>
+                    <div>
+                        <strong>{totalQuestions}</strong>
+                        Total Questions
                     </div>
                 </div>
 
+                <div>
 
-            )
-        }
+                    {onPlayAgain && (
+                        <button
+                            className="btn btn-primary"
+                            onClick={onPlayAgain}
+                        >
+                            Play Again
+                        </button>
+                    )}
+
+                    <button
+                        className="btn btn-secondary"
+                        onClick={() => navigate("/history")}
+                    >
+                        View History
+                    </button>
+
+                    <button
+                        className="btn"
+                        onClick={() => navigate("/dashboard")}>
+                        Home
+                    </button>
+                </div>
+            </div>
+        )
     }
+
+    return (
+
+        <div className="game-page">
+            <div className="game-header">
+                <button
+                    className="btn"
+                    onClick={walkAway}>
+                    Walk Away
+                </button>
+
+                <div>
+                    Question {currentIndex + 1} / {totalQuestions}
+                </div>
+
+            </div>
+
+            <div className="game-content">
+                <div className="question-card">
+                    <p className="question-text">
+                        {question.question}
+                    </p>
+                    <div className="answer-grid">
+                        {question.options.map((option, index) => {
+                            const hidden = hiddenOptions.includes(index)
+                            let className = "answer-btn"
+                            if (hidden) {
+                                className += " hidden"
+                            }
+
+                            if (selected === index) {
+                                className += " selected"
+                            }
+
+                            if (answerState === "revealed") {
+                                if (index === question.correctAnswer) {
+                                    className += " correct"
+                                }
+                                if (
+                                    index === selected &&
+                                    index !== question.correctAnswer
+                                ) {
+                                    className += "wrong"
+                                }
+                            }
+
+                            return (
+                                <button
+                                    key={index}
+                                    className={className}
+                                    onClick={() => answerQuestion(index)}
+                                    disabled={hidden || answerState !== "idle"}>
+                                    <span>{answerKeys[index]}</span>{option}
+                                </button>
+
+                            )
+
+                        })}
+
+                    </div>
+
+                    {answerState === "checking" && (
+                        <p>Checking answer...</p>
+                    )}
+
+                    {audienceResult && (
+                        <div className="audience-result">
+                            <h3>Ask the Audience</h3>
+                            {audienceResult.map((percentage, index) => (
+                                <p key={index}>
+                                    {answerKeys[index]}: {percentage}%
+                                </p>
+                            ))}
+                        </div>
+                    )}
+
+                    {phoneResult !== null && (
+
+                        <div className="phone-result">
+                            Your friend thinks the answer is {phoneResult}.
+                        </div>
+
+                    )}
+
+                </div>
+
+                <div className="lifelines">
+                    <button
+                        onClick={useFiftyFifty}
+                        disabled={usedLife.fiftyFifty}>
+                        50:50
+                    </button>
+                    <button
+                        onClick={useAudience}
+                        disabled={usedLife.audience}>
+                        Ask Audience
+                    </button>
+                    <button
+                        onClick={usePhone}
+                        disabled={usedLife.phone}>
+                        Phone a Friend
+                    </button>
+                </div>
+
+                <MoneyLadder ladder={ladder} currentIndex={currentIndex} />
+            </div>
+        </div>
+    )
 }
 
 
