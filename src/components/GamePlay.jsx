@@ -235,6 +235,34 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                             Home
                         </button>
                     </div>
+
+                    <div className="question-card">
+                        <p className="question-text">
+                            {question.question}
+                        </p>
+
+                        <div className="answer-grid">
+                            {question.options.map((option, index) => {
+                                const hidden = hiddenOptions.includes(index)
+                                let className = "answer-btn"
+                                if (hidden) {
+                                    className += "hidden"
+                                }
+                                if (selected === index) {
+                                    className += "selected"
+                                }
+                                if (answerState === "revealed"){
+                                    if( index === question.correctAnswer){
+                                        className += "correct"
+                                    }
+                                    if(
+                                        index === selected && index !==question.correctAnswer){
+                                            className += "wrong"
+                                        }
+                                }
+                            })}
+                        </div>
+                    </div>
                 </div>
 
 
