@@ -12,13 +12,11 @@ const revealAnswerDelay = 2000
 function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain }) {
     const navigate = useNavigate()
     const [currentIndex, setCurrentIndex] = useState(0)
-    const [historySaved, setHistorySaved] = useState(null)
+    const [selected, setSelected] = useState(null)
     const [answerState, setAnswerState] = useState("idle")
     const [correctCount, setCorrectCount] = useState(0)
     const [answeredCount, setAnsweredCount] = useState(0)
-    const [historySaved, setHistorySaved] = useState("playing")
-    const [historySaved, setHistorySaved] = useState(false)
-    const [historySaved, setHistorySaved] = useState("")
+    const [gameStatus, setGameStatus] = useState("playing")
 
 }
 
@@ -41,11 +39,63 @@ const submitting = useRef(false)
 const question = questions[currentIndex]
 const totalQuestions = questions.length
 
-useEffect(()=>{
-    return () =>{
-        if(timer.current){
+useEffect(() => {
+    return () => {
+        if (timer.current) {
             clearTimeout(timer.current)
         }
     }
 }, [])
 
+function resetQuestion() {
+    setSelected(null)
+    setAnswerState("idle")
+    setHiddenOptions([])
+    setAudienseResult(null)
+    setPhoneResult(null)
+}
+
+function answerQuestion(index){
+    if(answerState !== "idle" || submitting.current){
+        return
+    }
+
+    submitting.current = true
+    setSelected(index)
+    setAnswerState("checking")
+
+    timer.current = setTimeout(()=>{
+        const correct = index === question.correctAnswer
+
+        setAnswerState("revealed")
+        setAnsweredCount(count => count + 1)
+
+        if(correct){
+            setCorrectCount(count => count+1 )
+        }
+
+        timer.current = setTimeout(()=>{
+            submitting.current(false)
+
+            if(!correct){
+                setGameStatus("lost")
+                return
+            }
+
+            if(currentIndex+1 === totalQuestions){
+                setGameStatus("won")
+                return
+            }
+
+            setCurrentIndex(index => index+1)
+            resetQuestion()
+        }, 2000)
+    }, 2500)
+
+    function walkAway(){
+        if(answerState !== "idle" || submitting.current){
+            return
+        }
+        setGameStatus("quit")
+    }
+}
