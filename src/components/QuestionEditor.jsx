@@ -152,8 +152,8 @@ function QuestionEditor({questions, setQuestions}) {
                     onChange={event =>
                         changeOption(index, event.target.value)
                     }
-                    >
-
+                    />
+                    
                     <label>
                     <input type='radio'
                     name='correctAnswer'
