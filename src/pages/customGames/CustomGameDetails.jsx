@@ -55,7 +55,45 @@ function CustomGameDetails() {
   }
   const canStart = game.questions.length >= 3
   return (
-    <div>CustomGameDetails</div>
+    <div className='page page-narrow'>
+      <header className='page-header'>
+        <h1>{game.name}</h1>
+        <p>{game.questions.length} questions</p>
+      </header>
+      {error && <p className='error-banner' role='alert'>{error}</p>}
+      {!canStart && (
+        <p className="error-banner" role="alert">
+            Add at least 3 questions before starting.
+        </p>
+      )}
+      <div className='btn-row'>
+        <button className='btn btn-primary' disabled ={!canStart} onClick={() =>
+          navigate(`/custom-games/${id}/play`)
+        }
+        >Start game
+        </button>
+        <Link to={`/custom-games/${id}/edit`} className='btn btn-secondary'>Edit</Link>
+
+        <button className='btn btn-danger' onClick={handleDelete}>Delete</button>
+      </div>
+      <article className='card'>
+        <h3>Questions</h3>
+        <ul className='question-list'>
+          {game.questions.map((question,index) => (
+            <li className='question-list-item' key={index}>
+              <h4> Question {index +1} : {question.question} </h4>
+              <ul className='options-preview'>
+                {question.options.map((option, i) => (
+                  <li key={i} className={ i === question.correctAnswer ? 'is-correct' : ''}>
+                    {['A', 'B', 'C', 'D'][i]}. {option}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ul>
+      </article>
+    </div>
   )
 }
 
