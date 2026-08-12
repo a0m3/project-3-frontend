@@ -185,11 +185,9 @@ function QuestionEditor({questions, setQuestions}) {
                 <legend>Answer options</legend>
                 {form.options.map((option, index)=> (
                     <div className='option-input-row' key={index}>
-                        <span className='option-key'>
-                            {answers[index]}
-                        </span>
+
                     <label htmlFor={`option-${index}`} className='sr-only'>
-                        {'Answer ' + answers[index]}
+                        {'Answer ' + answers[index] + ' '}
                     </label>
                     <input id={`option-${index}`}
                     type='text'

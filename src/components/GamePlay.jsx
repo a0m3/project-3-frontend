@@ -252,15 +252,15 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                 <div className="end-stats">
                     <div>
                         <strong>{answeredCount}</strong>
-                        Questions Answered
+                         {" "}Questions Answered
                     </div>
                     <div>
                         <strong>{correctCount}</strong>
-                        Correct Answers
+                       {" "} Correct Answers
                     </div>
                     <div>
                         <strong>{totalQuestions}</strong>
-                        Total Questions
+                        {" "}Total Questions
                     </div>
                 </div>
 
@@ -273,6 +273,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                         >
                             Play Again
                         </button>
+                        
                     )}
 
                     <button
@@ -367,7 +368,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                     {phoneResult !== null && (
 
                         <div className="phone-result">
-                            Your friend thinks the answer is  {answerKeys[phoneResult]}. {question.options[phoneResult]}.
+                            Your friend thinks the answer is  {answerKeys[phoneResult]} {question.options[phoneResult]}.
                         </div>
 
                     )}
