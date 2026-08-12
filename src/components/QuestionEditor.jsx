@@ -129,6 +129,7 @@ function QuestionEditor({questions, setQuestions}) {
             <div className='form-field'>
                 <label htmlFor='question-text'>Question</label>
                 <textarea id="question-text"
+                name='question'
                 rows='2'
                 value={form.question}
                 onChange={handleChange}
@@ -170,7 +171,7 @@ function QuestionEditor({questions, setQuestions}) {
             </fieldset>
 
             <div className='btn-row'>
-                <button type='submit' className='btn btn-primary' onClick={handleSubmit}>
+                <button type='button' className='btn btn-primary' onClick={handleSubmit}>
                 {editIndex === null ? 'Add question' : 'Update question'}
                 </button>
 
