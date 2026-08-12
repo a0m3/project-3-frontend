@@ -29,11 +29,11 @@ function GameHistoryPage() {
   }, [])
   return (
     <div className="page">
-      <div className="page-header">
+      <div className="page-title">
         <h1>Game History</h1>
       </div>
 
-      {loading && (<p className="page-loading">Loading...</p>)}
+      {loading && (<p className="loading">Loading...</p>)}
 
       {!loading && history.length === 0 && (
         <div>
@@ -41,10 +41,10 @@ function GameHistoryPage() {
         </div>
       )}
 
-      <div>
+      <div className="list">
         {history.map(game => (
-          <div key={game._id}>
-            <div>
+          <div className="card row" key={game._id}>
+            <div className="row-main">
               <h3>{game.gameName}</h3>
 
               <span>
