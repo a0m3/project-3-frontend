@@ -40,11 +40,14 @@ const SignInForm = ({}) => {
   };
 
   return (
-    <main>
+    <main className='page narrow-page'>
+      <div className="page-title">
       <h1>Sign In</h1>
-      <p className='error-text'>{error}</p>
+      </div>
+      {error && <p className='error-box'>{error}</p>}
+      <div className="card">
       <form autoComplete='off' onSubmit={handleSubmit}>
-        <div>
+        <div className="field">
           <label htmlFor='email'>Username:</label>
           <input
             type='text'
@@ -56,7 +59,7 @@ const SignInForm = ({}) => {
             required
           />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor='password'>Password:</label>
           <input
             type='password'
@@ -68,11 +71,12 @@ const SignInForm = ({}) => {
             required
           />
         </div>
-        <div>
-          <button>Sign In</button>
-          <button onClick={() => navigate('/')}>Cancel</button>
+        <div className="button-row sign-button">
+          <button className="button main-button">Sign In</button>
+          <button className="button" onClick={() => navigate('/')}>Cancel</button>
         </div>
       </form>
+      </div>
     </main>
   );
 };

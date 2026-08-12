@@ -80,6 +80,9 @@ h1, h2, h3, h4 {
 .danger-button { background: rgba(229,72,77,.12); border-color: rgba(229,72,77,.5); color: #ff8b8e; }
 .small-button { padding: .4rem 1rem; font-size: .85rem; }
 .button-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+.sign-button { 
+  justify-content: center;
+ }
 
 .field { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1.1rem; }
 .field label { color: var(--muted); font-size: .85rem; }
