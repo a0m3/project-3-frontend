@@ -6,7 +6,8 @@ function QuestionEditor({questions, setQuestions}) {
     const newQuestion = {
         question: '',
         options: ['', '', '', ''],
-        correctAnswer: 0
+        correctAnswer: 0,
+        level: 1
     }
 
     const [form, setForm] = useState(newQuestion)
@@ -50,11 +51,16 @@ function QuestionEditor({questions, setQuestions}) {
                 return
             }
         }
-
+        const level = Number(form.level)
+        if(Number.isNaN(level) || level < 1 || level > 15) {
+            setError('Difficulty level must be selected between 1 and 15')
+            return
+        }
         const question = {
             question: form.question.trim(),
             options: form.options.map(option => option.trim()),
-            correctAnswer: Number(form.correctAnswer)
+            correctAnswer: Number(form.correctAnswer),
+            level: level
         }
         if(editIndex === null) {
             setQuestions([...questions,question])
@@ -71,7 +77,8 @@ function QuestionEditor({questions, setQuestions}) {
         setForm({
             question: question.question,
             options: [...question.options],
-            correctAnswer: question.correctAnswer
+            correctAnswer: question.correctAnswer,
+            level: question.level
         })
 
         setEditIndex(index)
@@ -92,6 +99,7 @@ function QuestionEditor({questions, setQuestions}) {
                     <h4>
                         question {index + 1}: {question.question}
                     </h4>
+                    <p>Level {question.level}</p>
                     <ul className='options-preview'>
                         {question.options.map((option, i) =>(
                             <li key={i} className={
@@ -123,17 +131,34 @@ function QuestionEditor({questions, setQuestions}) {
                 {editIndex === null ? 'Add a question': 'Edit question'}
             </h2>
         </header>
-        {error && <p className="Error-banner" role='alert'>{error}</p>}
+        {error && <p className="error-banner" role='alert'>{error}</p>}
 
         <div>
             <div className='form-field'>
                 <label htmlFor='question-text'>Question</label>
                 <textarea id="question-text"
+                name='question'
                 rows='2'
                 value={form.question}
                 onChange={handleChange}
                 />
             </div>
+
+            <div className='form-field'>
+                <label htmlFor='question-level'>Difficulty level (1 - 15)</label>
+                <select id="question-level"
+                name='level'
+                value={form.level}
+                onChange={handleChange}
+                > 
+                {Array.from({ length:15}, (_, i) => i + 1).map(level =>(
+                    <option key={level} value={level}>
+                        {level}
+                    </option>
+                ))}
+                </select>
+            </div>
+
 
             <fieldset>
                 <legend>Answer options</legend>
@@ -170,7 +195,7 @@ function QuestionEditor({questions, setQuestions}) {
             </fieldset>
 
             <div className='btn-row'>
-                <button type='submit' className='btn btn-primary' onClick={handleSubmit}>
+                <button type='button' className='btn btn-primary' onClick={handleSubmit}>
                 {editIndex === null ? 'Add question' : 'Update question'}
                 </button>
 
