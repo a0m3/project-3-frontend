@@ -44,8 +44,8 @@ if(game){
 
 
   return (
-    <section>
-      <header>
+    <section className="page">
+      <header className="page-title">
         <h1>Regular Game</h1>
         <p>Answer questions and climb the money ladder to win the MILLION!</p>
       </header>
@@ -60,7 +60,7 @@ if(game){
           <li>Top prize: {moneyAmount(moneyPool[moneyPool.length - 1])}</li>
         </ul>
 
-        <button className="btn btn-primary" onClick={startGame} disabled={loading}>
+        <button className="button main-button" onClick={startGame} disabled={loading}>
           {loading? 'Loading...' : 'Start Game'}
         </button>
 
