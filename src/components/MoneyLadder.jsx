@@ -7,7 +7,7 @@ function MoneyLadder({ ladder = moneyPool, currentIndex }) {
             const isCurrent = index === currentIndex
             const isReached = index < currentIndex
             return (
-                <div key={level} className={"ladder-row" + (isCurrent ? 'is-current' : isReached ? 'is-reached' : '')}>
+                <div key={level} className={"ladder-row" + (isCurrent ? ' is-current' : isReached ? ' is-reached' : '')}>
 
                     <span className="amount">{moneyAmount(amount)}</span>
                 </div>
