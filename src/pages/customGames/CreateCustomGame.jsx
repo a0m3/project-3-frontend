@@ -31,7 +31,8 @@ function CreateCustomGame() {
     }catch(error){
       setError(
         error.response?.data?.message ||
-        'Could not create game.'
+        'Could not create game.',
+        console.log(error)
       )
     }
   }
@@ -64,7 +65,7 @@ function CreateCustomGame() {
           <button className='btn btn-primary' type='submit'>Save game</button>
           <Link to='/custom-games' className='btn'>Cancel</Link>
         </div>
-        <p>{questions.length}questions</p>
+        <p>{questions.length} questions</p>
       </form>
     </div>
   )
