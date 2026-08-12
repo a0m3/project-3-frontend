@@ -40,7 +40,21 @@ function CustomGamePlayPage() {
     )
   }
   return (
-    <div>CustomGamePlayPage</div>
+    <div className="page">
+      <div className="page-header">
+        <h1>{game?.name || "Custom Game"}</h1>
+      </div>
+
+      <div className="card">
+        <button className="btn" onClick={startGame} disabled={loading}>
+          {loading ? "Loading..." : "Start Game"}
+        </button>
+
+        <p>
+          <Link to={`/custom-games/${id}`}>← Back to game</Link>
+        </p>
+      </div>
+    </div>
   )
 }
 
