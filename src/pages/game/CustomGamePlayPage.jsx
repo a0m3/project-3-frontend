@@ -47,6 +47,7 @@ function CustomGamePlayPage() {
       </div>
 
       <div className="card">
+        {error && <p className="error-banner" role="alert">{error}</p>}
         <button className="button" onClick={startGame} disabled={loading}>
           {loading ? "Loading..." : "Start Game"}
         </button>
