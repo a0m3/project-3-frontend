@@ -40,7 +40,7 @@ function Signup() {
   return (
     <main>
       <h1>Sign Up</h1>
-      <p className="error">{error}</p>
+      <p className="error-text">{error}</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>

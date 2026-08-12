@@ -42,7 +42,7 @@ const SignInForm = ({}) => {
   return (
     <main>
       <h1>Sign In</h1>
-      <p className='error'>{error}</p>
+      <p className='error-text'>{error}</p>
       <form autoComplete='off' onSubmit={handleSubmit}>
         <div>
           <label htmlFor='email'>Username:</label>
