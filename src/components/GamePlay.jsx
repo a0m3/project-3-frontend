@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { moneyAmount, MoneyLadder } from "./MoneyLadder";
+import MoneyLadder from "./MoneyLadder";
+import { moneyAmount } from "../utils/moneyLadder";
 import { createHistory } from "../services/historyService";
 
 import {
