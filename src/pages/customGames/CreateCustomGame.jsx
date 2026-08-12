@@ -65,7 +65,9 @@ function CreateCustomGame() {
           <button className='button main-button' type='submit'>Save game</button>
           <Link to='/custom-games' className='button'>Cancel</Link>
         </div>
-        <p>{questions.length} questions</p>
+        <p className={`question-count ${questions.length < 3 ? 'question-count-warning' : ''}`}>
+          {questions.length} question{questions.length !== 1 ? 's' : ''} added
+        </p>
       </form>
     </div>
   )
