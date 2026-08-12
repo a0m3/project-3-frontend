@@ -3,14 +3,22 @@ import {useState} from 'react'
 const answers = ['A', 'B', 'C', 'D']
 
 function QuestionEditor({questions, setQuestions}) {
-    const newQuestion = {
+    function nextLevel(){
+        const usedLevel = questions.map(oneQuestion => oneQuestion.level)
+        for (let level = 1; level <= 15; level++){
+            if(!usedLevel.includes(level)) {
+                return level
+            }
+        }
+        return 1
+    } 
+
+    const [form, setForm] = useState({
         question: '',
         options: ['', '', '', ''],
         correctAnswer: 0,
         level: 1
-    }
-
-    const [form, setForm] = useState(newQuestion)
+    })
     const [editIndex, setEditIndex] = useState(null)
     const [error, setError] = useState('')
 
@@ -32,7 +40,12 @@ function QuestionEditor({questions, setQuestions}) {
     }
 
     function resetForm(){
-        setForm(newQuestion)
+        setForm({
+            question: '',
+            options: ['', '', '', ''],
+            correctAnswer: 0,
+            level: nextLevel()
+        })
         setEditIndex(null)
         setError('')
     }
