@@ -68,7 +68,7 @@ function CustomGameDetails() {
             <button className='btn btn-danger' onClick={handleDelete}>
               Yes i am sure
             </button>
-            <button className='btn' onClick={() => setShowConfirm(false)}>
+            <button className='btn' onClick={() => setShowConfirm(true)}>
               Cancel
             </button>
           </div>
