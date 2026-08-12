@@ -125,7 +125,7 @@ function QuestionEditor({questions, setQuestions}) {
         </header>
         {error && <p className="Error-banner" role='alert'>{error}</p>}
 
-        <form onSubmit={handleSubmit}>
+        <div>
             <div className='form-field'>
                 <label htmlFor='question-text'>Question</label>
                 <textarea id="question-text"
@@ -170,7 +170,7 @@ function QuestionEditor({questions, setQuestions}) {
             </fieldset>
 
             <div className='btn-row'>
-                <button type='submit' className='btn btn-primary'>
+                <button type='submit' className='btn btn-primary' onClick={handleSubmit}>
                 {editIndex === null ? 'Add question' : 'Update question'}
                 </button>
 
@@ -180,7 +180,7 @@ function QuestionEditor({questions, setQuestions}) {
                     </button>
                 )}
             </div>
-        </form>
+        </div>
       </article>
     </div>
   )
