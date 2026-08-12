@@ -5,7 +5,7 @@ function Navbar() {
   const { logout, user, isAdmin } = useAuth()
   return (
     <nav className='navbar'>
-      <Link to="/" className="navbar-brand">
+      <Link to="/" className="brand">
         Millionare<span>?</span></Link>
       {user
         ?
@@ -18,11 +18,11 @@ function Navbar() {
             <Link to="/admin/questions">Admin</Link>
           )}
 
-          <Link to="/profile" className="navbar-username">
+          <Link to="/profile" className="username">
             {user.username}
           </Link>
 
-          <button className="btn btn-sm" onClick={logout}>
+          <button className="button small-button" onClick={logout}>
             Sign Out
           </button>
         </>) :
