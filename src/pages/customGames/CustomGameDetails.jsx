@@ -10,6 +10,7 @@ function CustomGameDetails() {
   const [game, setGame] = useState(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
+  const [showConfirm, setShowConfirm] = useState(false)
 
   useEffect(() => {
     async function loadGame() {
@@ -27,12 +28,6 @@ function CustomGameDetails() {
   },[id])
 
   async function handleDelete() {
-    const answer = window.confirm(
-      'Delete this custom game?'
-    )
-    if (!answer) {
-      return
-    }
     try{
       await deleteGame(id)
       navigate('/custom-games')
@@ -65,6 +60,19 @@ function CustomGameDetails() {
         <p className="error-banner" role="alert">
             Add at least 3 questions before starting.
         </p>
+      )}
+      {showConfirm && (
+        <div className='card confirm-box'>
+          <p>Are you sure you want to delete this custom game? this action cant be undone</p>
+          <div className='btn-row'>
+            <button className='btn btn-danger' onClick={handleDelete}>
+              Yes i am sure
+            </button>
+            <button className='btn' onClick={() => setShowConfirm(false)}>
+              Cancel
+            </button>
+          </div>
+          </div>
       )}
       <div className='btn-row'>
         <button className='btn btn-primary' disabled ={!canStart} onClick={() =>
