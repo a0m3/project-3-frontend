@@ -40,6 +40,7 @@ function EditCustomGame() {
         name: name,
         questions: questions
       })
+      navigate(`/custom-games/${id}`)
     } catch (error) {
       setError (
           error.response?.data?.message || 'Could not save game'
