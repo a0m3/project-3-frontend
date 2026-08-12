@@ -28,7 +28,19 @@ function GameHistoryPage() {
 
   }, [])
   return (
-    <div>GameHistoryPage</div>
+    <div className="page">
+      <div className="page-header">
+        <h1>Game History</h1>
+      </div>
+
+      {loading && (<p className="page-loading">Loading...</p>)}
+
+      {!loading && history.length === 0 && (
+        <div>
+          <p>You have not played any games yet.</p>
+        </div>
+      )}
+    </div>
   )
 }
 
