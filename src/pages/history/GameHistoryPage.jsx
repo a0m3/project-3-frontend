@@ -40,6 +40,29 @@ function GameHistoryPage() {
           <p>You have not played any games yet.</p>
         </div>
       )}
+
+      <div>
+        {history.map(game => (
+          <div key={game._id}>
+            <div>
+              <h3>{game.gameName}</h3>
+
+              <span>
+                {game.correctCount}/{game.totalQuestions} correct
+              </span>
+              <br />
+              <span>{new Date(game.playedAt).toLocaleDateString()}</span>
+            </div>
+
+            <div>
+              <div>
+                {moneyAmount(game.moneyWon)}
+              </div>
+              <span>{game.status}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
