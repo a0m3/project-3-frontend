@@ -19,7 +19,7 @@ function RegularGamePage() {
       const data = await getGameQuestions()
       setGame({...data, startedAt: Date.now() })
     }
-    catch(err){
+    catch(error){
       setError(
         error.response?.data?.message || 'Could not load questions.'
       )
@@ -50,7 +50,7 @@ if(game){
         <p>Answer questions and climb the money ladder to win the MILLION!</p>
       </header>
 
-      <article className="card">
+      <article className="card text-center">
         <h3>How it works</h3>
 
         <ul>
@@ -59,12 +59,13 @@ if(game){
           <li>A wrong answer ends the game.</li>
           <li>Top prize: {moneyAmount(moneyPool[moneyPool.length - 1])}</li>
         </ul>
-
+        <div className="button-row">
         <button className="button main-button" onClick={startGame} disabled={loading}>
           {loading? 'Loading...' : 'Start Game'}
         </button>
 
         <p><Link to='/dashboard'>← Back</Link></p>
+        </div>
       </article>
     </section>
   )
