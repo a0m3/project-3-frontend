@@ -220,7 +220,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
 
     if (gameStatus !== "playing") {
         return (
-            <div className="end-screen card">
+            <div className="end card">
                 {gameStatus === "won" && (
                     <>
                         <div className="emoji">🎉</div>
@@ -245,11 +245,11 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                     </>
                 )}
 
-                <div className="final-amount">
+                <div className="prize">
                     {moneyAmount(moneyWon)}
                 </div>
 
-                <div className="end-stats">
+                <div className="stats">
                     <div>
                         <strong>{answeredCount}</strong>
                          {" "}Questions Answered
@@ -268,7 +268,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
 
                     {onPlayAgain && (
                         <button
-                            className="btn btn-primary"
+                            className="button main-button"
                             onClick={onPlayAgain}
                         >
                             Play Again
@@ -277,14 +277,14 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                     )}
 
                     <button
-                        className="btn btn-secondary"
+                        className="button second-button"
                         onClick={() => navigate("/history")}
                     >
                         View History
                     </button>
 
                     <button
-                        className="btn"
+                        className="button"
                         onClick={() => navigate("/dashboard")}>
                         Home
                     </button>
@@ -295,10 +295,10 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
 
     return (
 
-        <div className="game-page">
+        <div className="game">
             <div className="game-header">
                 <button
-                    className="btn"
+                    className="button"
                     onClick={walkAway}>
                     Walk Away
                 </button>
@@ -310,14 +310,14 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
             </div>
 
             <div className="game-content">
-                <div className="question-card">
+                <div className="question">
                     <p className="question-text">
                         {question.question}
                     </p>
-                    <div className="answer-grid">
+                    <div className="answers">
                         {question.options.map((option, index) => {
                             const hidden = hiddenOptions.includes(index)
-                            let className = "answer-btn"
+                            let className = "answer"
                             if (hidden) {
                                 className += " hidden"
                             }
@@ -355,7 +355,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                     )}
 
                     {audienceResult && (
-                        <div className="audience-result">
+                        <div className="audience">
                             <h3>Ask the Audience</h3>
                             {audienceResult.map((percentage, index) => (
                                 <p key={index}>
@@ -367,7 +367,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
 
                     {phoneResult !== null && (
 
-                        <div className="phone-result">
+                        <div className="phone">
                             Your friend thinks the answer is  {answerKeys[phoneResult]} {question.options[phoneResult]}.
                         </div>
 
