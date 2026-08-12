@@ -201,9 +201,35 @@ h1, h2, h3, h4 {
 .correct-option { color: var(--green); font-weight: 600; }
 .option-row { display: flex; align-items: center; gap: .6rem; margin-bottom: .5rem; }
 .option-letter { width: 22px; color: var(--bright-gold); font-family: "Oswald", sans-serif; }
-
+.correct-radio {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+.option-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  cursor: pointer;
+}
 .confirm { margin-top: 1rem; }
 
+.legend-field{
+  padding: 0 .5rem;
+  color: var(--bright-gold);
+  font-family: "Oswald", sans-serif;
+  background: var(--navy);
+}
+.question-count {
+  text-align: center;
+  color: var(--muted);
+  font-size: .9rem;
+  margin-top: .75rem;
+}
+.question-count-warning {
+  color: #ff9ea1; 
+  }
 @media (max-width: 600px) {
   .answers { grid-template-columns: 1fr; }
   .navbar { justify-content: center; }

@@ -114,18 +114,18 @@ function QuestionEditor({questions, setQuestions}) {
   return (
     <div>
       {questions.length > 0 && (
-        <ul className="question-list">
+        <ul className="questions">
             {questions.map((question,index) => (
-                <li className="question-list-item" key={index}>
+                <li className="question-item" key={index}>
                     <h4>
                         question {index + 1}: {question.question}
                     </h4>
                     <p>Level {question.level}</p>
-                    <ul className='options-preview'>
+                    <ul className='options'>
                         {question.options.map((option, i) =>(
                             <li key={i} className={
                                 i === question.correctAnswer
-                                 ? 'is-correct' 
+                                 ? 'correct-option' 
                                  : ''
                             }>
                                 {answers[i]}. {option}
@@ -134,11 +134,11 @@ function QuestionEditor({questions, setQuestions}) {
                             </li>
                         ))}
                     </ul>
-                    <div className='btn-row'>
-                        <button type='button' className='btn btn-sm btn-secondary' onClick={() => editQuestion(index)}>
+                    <div className='button-row'>
+                        <button type='button' className='button small-button second-button' onClick={() => editQuestion(index)}>
                             Edit
                         </button>
-                        <button type='button' className='btn btn-sm btn-danger' onClick={() => deleteQuestion(index)}>
+                        <button type='button' className='button small-button danger-button' onClick={() => deleteQuestion(index)}>
                             Delete
                         </button>
                     </div>
@@ -152,10 +152,10 @@ function QuestionEditor({questions, setQuestions}) {
                 {editIndex === null ? 'Add a question': 'Edit question'}
             </h2>
         </header>
-        {error && <p className="error-banner" role='alert'>{error}</p>}
+        {error && <p className="error-box" role='alert'>{error}</p>}
 
         <div>
-            <div className='form-field'>
+            <div className='field'>
                 <label htmlFor='question-text'>Question</label>
                 <textarea id="question-text"
                 name='question'
@@ -165,7 +165,7 @@ function QuestionEditor({questions, setQuestions}) {
                 />
             </div>
 
-            <div className='form-field'>
+            <div className='field'>
                 <label htmlFor='question-level'>Difficulty level (1 - 15)</label>
                 <select id="question-level"
                 name='level'
@@ -182,11 +182,14 @@ function QuestionEditor({questions, setQuestions}) {
 
 
             <fieldset>
-                <legend>Answer options</legend>
+                <legend className='legend-field'>Answer options</legend>
                 {form.options.map((option, index)=> (
-                    <div className='option-input-row' key={index}>
+                    <div className='option-row' key={index}>
+                        <span className='option-letter'>
+                            {answers[index]}
+                        </span>
 
-                    <label htmlFor={`option-${index}`} className='sr-only'>
+                    <label htmlFor={`option-${index}`} className='screen-reader'>
                         {'Answer ' + answers[index] + ' '}
                     </label>
                     <input id={`option-${index}`}
@@ -199,7 +202,8 @@ function QuestionEditor({questions, setQuestions}) {
                     />
                     
                     <label>
-                    <input type='radio'
+                    <input className='correct-radio'
+                    type='radio'
                     name='correctAnswer'
                     value={index}
                     checked={
@@ -213,13 +217,13 @@ function QuestionEditor({questions, setQuestions}) {
                 ))}
             </fieldset>
 
-            <div className='btn-row'>
-                <button type='button' className='btn btn-primary' onClick={handleSubmit}>
+            <div className='button-row'>
+                <button type='button' className='button main-button' onClick={handleSubmit}>
                 {editIndex === null ? 'Add question' : 'Update question'}
                 </button>
 
                 {editIndex !== null &&(
-                    <button type='button' className='btn' onClick={() =>resetForm(questions)}>
+                    <button type='button' className='button' onClick={() =>resetForm(questions)}>
                         cancel
                     </button>
                 )}
