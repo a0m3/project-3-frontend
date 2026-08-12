@@ -1,4 +1,4 @@
-import { use, useState } from "react"
+import { useState } from "react"
 import { useParams, Link } from "react-router"
 import GamePlay from "../../components/GamePlay"
 import { playGame } from "../../services/customGameService"
@@ -17,7 +17,7 @@ function CustomGamePlayPage() {
 
     try {
       const data = await playGame(id)
-      setGame(data)
+      setGame({...data, startedAt: Date.now()})
     }
     catch (error) {
       setError(error.response?.data?.message || "Could not load this game.")
@@ -29,13 +29,14 @@ function CustomGamePlayPage() {
     return (
       <div className="page">
         <GamePlay
+        key={game.startedAt}
           questions={game.questions}
           ladder={game.ladder}
           mode="custom"
           gameName={game.name}
           customGameId={game._id}
           onPlayAgain={startGame}
-        ></GamePlay>
+        />
       </div>
     )
   }
