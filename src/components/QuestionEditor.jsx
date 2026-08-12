@@ -3,14 +3,22 @@ import {useState} from 'react'
 const answers = ['A', 'B', 'C', 'D']
 
 function QuestionEditor({questions, setQuestions}) {
-    const newQuestion = {
+    function nextLevel(list){
+        const usedLevel = list.map(oneQuestion => oneQuestion.level)
+        for (let level = 1; level <= 15; level++){
+            if(!usedLevel.includes(level)) {
+                return level
+            }
+        }
+        return 1
+    } 
+
+    const [form, setForm] = useState({
         question: '',
         options: ['', '', '', ''],
         correctAnswer: 0,
         level: 1
-    }
-
-    const [form, setForm] = useState(newQuestion)
+    })
     const [editIndex, setEditIndex] = useState(null)
     const [error, setError] = useState('')
 
@@ -31,8 +39,13 @@ function QuestionEditor({questions, setQuestions}) {
         })
     }
 
-    function resetForm(){
-        setForm(newQuestion)
+    function resetForm(updatedQuestions){
+        setForm({
+            question: '',
+            options: ['', '', '', ''],
+            correctAnswer: 0,
+            level: nextLevel(updatedQuestions)
+        })
         setEditIndex(null)
         setError('')
     }
@@ -56,20 +69,27 @@ function QuestionEditor({questions, setQuestions}) {
             setError('Difficulty level must be selected between 1 and 15')
             return
         }
+
+        const duplicateLevel = questions.some((oneQuestion, index) => oneQuestion.level === level && index !== editIndex)
+        if (duplicateLevel) {
+            setError(`Level ${level} is already used by another question`)
+            return
+        }
         const question = {
             question: form.question.trim(),
             options: form.options.map(option => option.trim()),
             correctAnswer: Number(form.correctAnswer),
             level: level
         }
+        let updatedQuestions
         if(editIndex === null) {
-            setQuestions([...questions,question])
+            updatedQuestions=[...questions,question]
         } else{
-            const updated = [...questions]
-            updated[editIndex] = question
-            setQuestions(updated)
+            updatedQuestions = [...questions]
+            updatedQuestions[editIndex] = question
         }
-        resetForm()
+        setQuestions(updatedQuestions)
+        resetForm(updatedQuestions)
     }
     function editQuestion (index) {
         const question = questions[index]
@@ -85,9 +105,10 @@ function QuestionEditor({questions, setQuestions}) {
         setError('')
     }
     function deleteQuestion(index) {
-        setQuestions(questions.filter(( question, i) => i !== index))
+        const updatedQuestions = questions.filter((question, i) => i !== index)
+        setQuestions(updatedQuestions)
         if (editIndex === index) {
-            resetForm()
+            resetForm(updatedQuestions)
         }
     }
   return (
@@ -200,7 +221,7 @@ function QuestionEditor({questions, setQuestions}) {
                 </button>
 
                 {editIndex !== null &&(
-                    <button type='button' className='btn' onClick={resetForm}>
+                    <button type='button' className='btn' onClick={() =>resetForm(questions)}>
                         cancel
                     </button>
                 )}

@@ -1,8 +1,69 @@
-import React from 'react'
+import { useEffect, useState } from "react"
+import { getMyHistory } from "../../services/historyService"
+import { moneyAmount } from "../../utils/moneyLadder"
+
+
 
 function GameHistoryPage() {
+
+  const [history, setHistory] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    async function loadHistory() {
+      try {
+        const data = await getMyHistory()
+        setHistory(data)
+      }
+      catch (error) {
+        setError(
+          error.response?.data?.message ||
+          "Could not load history."
+        )
+      }
+      setLoading(false)
+    }
+    loadHistory()
+
+  }, [])
   return (
-    <div>GameHistoryPage</div>
+    <div className="page">
+      <div className="page-header">
+        <h1>Game History</h1>
+      </div>
+
+      {loading && (<p className="page-loading">Loading...</p>)}
+
+      {!loading && history.length === 0 && (
+        <div>
+          <p>You have not played any games yet.</p>
+        </div>
+      )}
+
+      <div>
+        {history.map(game => (
+          <div key={game._id}>
+            <div>
+              <h3>{game.gameName}</h3>
+
+              <span>
+                {game.correctCount}/{game.totalQuestions} correct
+              </span>
+              <br />
+              <span>{new Date(game.playedAt).toLocaleDateString()}</span>
+            </div>
+
+            <div>
+              <div>
+                {moneyAmount(game.moneyWon)}
+              </div>
+              <span>{game.status}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   )
 }
 

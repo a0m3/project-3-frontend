@@ -9,7 +9,7 @@ import {
 }
     from "../components/helping/gameHelper"
 
-const answerKeys = ["A", "B", "C", "D"]
+const answerKeys = ["A. ", "B. ", "C. ", "D. "]
 const checkAnswerWait = 2500
 const revealAnswerDelay = 2000
 
@@ -161,17 +161,11 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
 
 
     function usePhone() {
-
         if (usedLife.phone || answerState !== "idle") {
             return
         }
-
-        const answer = getPhoneAnswer(
-            question.correctAnswer
-        )
-
+        const answer = getPhoneAnswer(question.correctAnswer)
         setPhoneResult(answer)
-
         setUsedLife({
             ...usedLife,
             phone: true
@@ -351,11 +345,8 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                                     disabled={hidden || answerState !== "idle"}>
                                     <span>{answerKeys[index]}</span>{option}
                                 </button>
-
                             )
-
                         })}
-
                     </div>
 
                     {answerState === "checking" && (
@@ -376,7 +367,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                     {phoneResult !== null && (
 
                         <div className="phone-result">
-                            Your friend thinks the answer is {phoneResult}.
+                            Your friend thinks the answer is  {answerKeys[phoneResult]}. {question.options[phoneResult]}.
                         </div>
 
                     )}
