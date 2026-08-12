@@ -251,7 +251,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                 )}
 
                 <div className="final-amount">
-                    {moneyAmoount(moneyWon)}
+                    {moneyAmount(moneyWon)}
                 </div>
 
                 <div className="end-stats">
