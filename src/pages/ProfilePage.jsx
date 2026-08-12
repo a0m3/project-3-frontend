@@ -35,7 +35,7 @@ function ProfilePage() {
 
   return (
     <div className='page'>
-      <div>
+      <div className='page-title'>
         <h1>My Profile</h1>
       </div>
 
@@ -43,7 +43,7 @@ function ProfilePage() {
         <p>Username: {user.username}</p>
       </div>
     
-    <div>
+    <div className="card">
       <h3>Stats</h3>
 
       <div>
