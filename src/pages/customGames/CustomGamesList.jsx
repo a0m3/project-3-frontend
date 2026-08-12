@@ -24,34 +24,34 @@ function CustomGamesList() {
   },[])
   return (
     <div className='page'>
-      <header className='page-header'>
+      <header className='page-title'>
         <h1> Custom Games</h1>
         <p> Create your own millionaire game</p>
       </header>
 
-      {error && <p className='error-banner' role='alert'>{error}</p>}
+      {error && <p className='error-box' role='alert'>{error}</p>}
 
-      <Link to='/custom-games/new' className='btn btn-primary'>
+      <Link to='/custom-games/new' className='button main-button'>
         + Add new custom game
       </Link>
 
-      {loading && <p className='page-loading'> Loading...</p>}
+      {loading && <p className='loading'> Loading...</p>}
 
       {!loading && games.length === 0 &&(
-        <div className='empty-state'> 
+        <div className='empty'> 
           <p>You have no custom games yet.</p>
         </div>
       )}
-      <ul className='list-grid'>
+      <ul className='list'>
         {games.map(game => (
-          <li className='card list-row' key={game._id}>
-            <div className='list-row-main'>
+          <li className='card row' key={game._id}>
+            <div className='row-main'>
               <h3>{game.name}</h3>
               <span>
                 {game.questionCount} questions
               </span>
             </div>
-            <Link to={`/custom-games/${game._id}`} className='btn btn-secondary'>Open</Link>
+            <Link to={`/custom-games/${game._id}`} className='button second-button'>Open</Link>
 
           </li>
         ))}

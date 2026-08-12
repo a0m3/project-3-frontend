@@ -41,12 +41,12 @@ function CustomGamePlayPage() {
   }
   return (
     <div className="page">
-      <div className="page-header">
+      <div className="page-title">
         <h1>{game?.name || "Custom Game"}</h1>
       </div>
 
       <div className="card">
-        <button className="btn" onClick={startGame} disabled={loading}>
+        <button className="button" onClick={startGame} disabled={loading}>
           {loading ? "Loading..." : "Start Game"}
         </button>
 
