@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react'
 import {Link, useNavigate, useParams} from 'react-router'
-import { getQuestionById, createQuestion, updateQuestion } from '../../services/questionService'
+import { getQuestionById, createQuestion } from '../../services/questionService'
 import { moneyPool, moneyAmount } from '../../utils/moneyLadder'
 
 const answers =['A', 'B', 'C', 'D']
@@ -95,7 +95,7 @@ function AdminQuestionForm() {
     }
   }
   if(loading) {
-    return <p className='page-loading'> Loading...</p>
+    return <p className='loading'> Loading...</p>
   }
   return (
     <div>AdminQuestionForm</div>

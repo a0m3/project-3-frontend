@@ -1,7 +1,27 @@
-.error{
-    color: red
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+
+
+:root {
+  --dark: #060a1a;
+  --navy: #0d1636;
+  --blue: #1f3a72;
+  --light-blue: #16214a;
+  --gold: #f2b83c;
+  --bright-gold: #ffd166;
+  --cyan: #4fd7e8;
+  --green: #38c172;
+  --red: #e5484d;
+  --text: #eef1fb;
+  --muted: #a6aed1;
 }
 
-nav a{
-    margin-right: 10px
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% -10%, var(--blue), var(--navy) 45%, var(--dark));
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: "Inter", sans-serif;
 }
