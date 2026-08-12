@@ -17,7 +17,7 @@ function RegularGamePage() {
 
     try{
       const data = await getGameQuestions()
-      setGame(data)
+      setGame({...data, startedAt: Date.now() })
     }
     catch(err){
       setError(
@@ -31,7 +31,7 @@ function RegularGamePage() {
 if(game){
   return(
     <section className="page">
-      <GamePlay 
+      <GamePlay key={game.startedAt}
       questions={game.questions}
       ladder={game.ladder||moneyPool}
       mode='regular'
