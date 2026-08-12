@@ -44,7 +44,29 @@ if(game){
 
 
   return (
-    <div>RegularGamePage</div>
+    <section>
+      <header>
+        <h1>Regular Game</h1>
+        <p>Answer questions and climb the money ladder to win the MILLION!</p>
+      </header>
+
+      <article className="card">
+        <h3>How it works</h3>
+
+        <ul>
+          <li>Questions become harder.</li>
+          <li>You have three lifelines.</li>
+          <li>A wrong answer ends the game.</li>
+          <li>Top prize: {moneyAmount(moneyPool[moneyPool.length - 1])}</li>
+        </ul>
+
+        <button className="btn btn-primary" onClick={startGame} disabled={loading}>
+          {loading? 'Loading...' : 'Start Game'}
+        </button>
+
+        <p><Link to='/dashboard'>← Back</Link></p>
+      </article>
+    </section>
   )
 }
 
