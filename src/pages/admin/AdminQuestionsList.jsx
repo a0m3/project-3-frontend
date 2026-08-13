@@ -1,5 +1,5 @@
 import {useState,useEffect} from 'react'
-import {link} from 'react-router'
+import {Link} from 'react-router'
 import { getAllQuestions, deleteQuestion } from '../../services/questionService'
 import { moneyPool, moneyAmount } from '../../utils/moneyLadder'
 

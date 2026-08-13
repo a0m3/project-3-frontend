@@ -238,6 +238,48 @@ h1, h2, h3, h4 {
 }
 .confirm { margin-top: 1rem; }
 
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: .75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+.admin-table th {
+  color: var(--bright-gold);
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: .85rem;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  color: var(--text);
+  font-size: .9rem;
+}
+
+.admin-table tbody tr:hover {
+  background: rgba(255,255,255,.03);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 700px) {
+  .admin-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
 .legend-field{
   padding: 0 .5rem;
   color: var(--bright-gold);
