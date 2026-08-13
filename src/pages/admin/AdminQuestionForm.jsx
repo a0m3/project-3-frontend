@@ -98,7 +98,86 @@ function AdminQuestionForm() {
     return <p className='loading'> Loading...</p>
   }
   return (
-    <div>AdminQuestionForm</div>
+    <div className='page narrow-page'>
+      <header className='page-title'>
+      <h1> {editing ? 'Edit question' : 'Add a question'}</h1>
+      </header>
+      {error && <p className='error-box' role='alert'>{error}</p>}
+
+      <form onSubmit={handleSubmit}>
+        <article className='card'>
+          <div className='field'>
+            <label htmlFor='question-text'>Question</label>
+            <textarea
+              id='question-text'
+              name='question'
+              rows='3'
+              value={form.question}
+              onChange={handleChange}
+            />
+          </div>
+
+          <fieldset>
+            <legend className='legend-field'>Answer options</legend>
+            {form.options.map((option, index) => (
+              <div className='option-row' key={index}>
+                <span className='option-letter'>
+                  {answers[index]}
+                </span>
+
+                <label htmlFor={`option-${index}`} className='screen-reader'>
+                  {'Answer ' + answers[index]}
+                </label>
+                <input
+                 id={`option-${index}`}
+                type='text'
+                value={option}
+                onChange={event => changeOption(index, event.target.value)}
+                />
+
+                <label>
+                  <input
+                    type='radio'
+                    name='correctAnswer'
+                    value={index}
+                    checked={Number(form.correctAnswer) === index}
+                    onChange={handleChange}
+                  />
+                  correct
+                </label>
+              </div>
+            ))}
+          </fieldset>
+
+          <div className='field'>
+            <label htmlFor='question-level'>Difficulty Level</label>
+
+            <select
+              id='question-level'
+              name='level'
+              value={form.level}
+              onChange={handleChange}
+            >
+              {moneyPool.map((amount, index) => (
+                <option value={index + 1} key={index}>
+                  Level {index + 1} - {moneyAmount(amount)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className='button-row'>
+            <button className='button main-button' type='submit'>
+              {editing ? 'Update Question' : 'Create Question'}
+            </button>
+
+            <Link to='/admin/questions' className='button'>
+              Cancel
+            </Link>
+          </div>
+        </article>
+      </form>
+    </div>
   )
 }
 
