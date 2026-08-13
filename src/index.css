@@ -182,7 +182,30 @@ h1, h2, h3, h4 {
 .lifelines button { padding: .65rem 1rem; border: 1px solid var(--gold); border-radius: 999px; background: rgba(242,184,60,.08); color: var(--bright-gold); }
 .audience, .phone { margin-top: 1rem; padding: .9rem 1.1rem; border: 1px solid rgba(79,215,232,.3); border-radius: 10px; background: rgba(79,215,232,.08); }
 
-.ladder { display: flex; flex-direction: column-reverse; gap: .28rem; margin-top: 1rem; padding: .75rem; border: 1px solid rgba(242,184,60,.18); border-radius: 14px; background: rgba(6,10,26,.55); }
+.ladder {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: .28rem;
+  padding: .75rem;
+  border: 1px solid rgba(242,184,60,.18);
+  border-radius: 14px;
+  background: rgba(6,10,26,.55);
+
+  position: fixed;
+  top: 6.5rem;
+  right: 2rem;
+  width: 190px;
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+}
+
+@media (max-width: 1100px) {
+  .ladder {
+    position: static;
+    width: auto;
+    max-height: none;
+  }
+}
 .ladder-row { display: flex; justify-content: space-between; padding: .4rem .6rem; border-radius: 6px; color: var(--muted); font-family: "Oswald", sans-serif; }
 .ladder-row.reached { color: var(--bright-gold); }
 .ladder-row.current { background: var(--gold); color: var(--dark); font-weight: 700; }

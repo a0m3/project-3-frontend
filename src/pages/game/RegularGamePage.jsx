@@ -66,7 +66,7 @@ if(game){
 
         <p><Link to='/dashboard'>← Back</Link></p>
         </div>
-      </article>
+      </article> 
     </section>
   )
 }

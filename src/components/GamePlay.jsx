@@ -334,7 +334,7 @@ function GamePlay({ questions, ladder, mode, gameName, customGameId, onPlayAgain
                                     index === selected &&
                                     index !== question.correctAnswer
                                 ) {
-                                    className += "wrong"
+                                    className += " wrong"
                                 }
                             }
 

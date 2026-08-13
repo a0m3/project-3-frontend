@@ -92,7 +92,7 @@ function CustomGameDetails() {
               <h4> Question {index +1} : {question.question} </h4>
               <ul className='options'>
                 {question.options.map((option, i) => (
-                  <li key={i} className={ i === question.correctAnswer ? 'correct-option' : ''}>
+                  <li key={i} >
                     {['A', 'B', 'C', 'D'][i]}. {option}
                   </li>
                 ))}
