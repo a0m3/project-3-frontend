@@ -43,9 +43,74 @@ function AdminQuestionsList() {
   const missing = moneyPool
     .map((amount, index) => index + 1)
     .filter(level => !levels.has(level))
-    
+
   return (
-    <div>AdminQuestionsList</div>
+    <div className='page'>
+      <header className='page-title'>
+        <h1> Admin Question List</h1>
+      </header>
+      {error && <p className='error-box' role='alert'>{error}</p>}
+
+      {missing.length > 0 &&(
+        <p className='error-box' role='alert'>
+          Missing levels: {missing.join(',')}
+        </p>
+      )}
+      <Link to ='/admin/questions/new' className='button main-button'>
+      + Add question
+      </Link>
+
+      {loading && <p className='loading'>Loading...</p>}
+
+      {!loading && questions.length === 0 &&(
+        <p> No questions yet</p>
+      )}
+      {!loading && questions.length === 0 && (
+        <article className='card'>
+          <table className='admin-table'>
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Prize</th>
+                <th>Question</th>
+                <th>Correct</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {questions.map(question => (
+                <tr key={question._id}>
+                  <td>{question.level}</td>
+
+                  <td> {moneyAmount(moneyPool[question.level - 1])} </td>
+
+                  <td>{question.question}</td>
+                  <td>{['A', 'B', 'C', 'D'][question.correctAnswer]}</td>
+
+                  <td>
+                    <div className='button-row'>
+                      <Link
+                        to={'/admin/questions/' + question._id + '/edit'}
+                        className='button small-button second-button'
+                      >
+                        Edit
+                      </Link>
+
+                      <button
+                        className='button small-button danger-button'
+                        onClick={() => removeQuestion(question._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                    </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </article>
+      )}
+    </div>
   )
 }
 
