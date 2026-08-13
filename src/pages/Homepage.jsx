@@ -12,7 +12,7 @@ function Homepage() {
         <p>Answer questions, climb the money ladder, and try to win $1,000,000.</p>
 
         {!user ? (
-          <div className="button-row">
+          <div className="button-row home-btn">
             <Link to="/sign-up" className="button main-button">Sign Up Now to Play</Link>
             <Link to="/sign-in" className="button second-button">Sign In</Link>
           </div>
